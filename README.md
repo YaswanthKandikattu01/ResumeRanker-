@@ -1,43 +1,120 @@
-# Advanced Resume Automation Workflow (Python Version of n8n)
+# Resume Automation with AI + Google Workspace
 
-## Features
-- Batch process multiple resumes from a folder
-- Upload to Google Drive
-- Extract text & personal info using OpenAI
-- Summarize and HR evaluate candidates
-- Keyword matching against job description
-- Rank candidates by score
-- Local CSV backup of results
+An advanced Python tool that automates resume screening, scoring, and organization using OpenAI GPT, Google Sheets API, and Google Drive API.
 
-## Setup
-1. Create Python virtual environment:
+## ✨ Features
+- Batch process PDF resumes
+- AI-powered extraction of candidate details & skills
+- Match scoring against a job description
+- Auto-generated summaries & match percentages
+- Google Sheets integration for structured tracking
+- Google Drive upload with organized folders
+- Local CSV backups & shortlist generation
+
+---
+
+## 📦 Installation & Setup
+
+### 1. Install Required Software
+- [Python 3.10+](https://www.python.org/downloads/) (check “Add Python to PATH” on Windows)
+- [Visual Studio Code](https://code.visualstudio.com/) with Python extension
+- (Optional) [Git](https://git-scm.com/downloads)
+
+### 2. Get the Code
+- Download and unzip `resume-automation-advanced.zip` **OR** clone from GitHub:
 ```bash
+git clone https://github.com/yourusername/resume-automation.git
+```
+- Open the folder in VS Code.
+
+### 3. Create Virtual Environment
+**Windows**
+```powershell
 python -m venv venv
-source venv/bin/activate  # Mac/Linux
-venv\Scripts\activate   # Windows
+.env\Scripts\Activate.ps1
+```
+**macOS/Linux**
+```bash
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-2. Install requirements:
+### 4. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Place credentials:
-- `gspread_credentials.json` for Google Sheets
-- `client_secrets.json` for Google Drive
-- Share your Google Sheet with the service account email.
+---
 
-4. Set environment variables:
+## 🔑 API Keys & Credentials
+
+### OpenAI API Key
+1. Get key from [platform.openai.com](https://platform.openai.com/) → API Keys.
+2. Save as environment variable:
+   - **Windows**:
+     ```powershell
+     $env:OPENAI_API_KEY="sk-yourkey"
+     ```
+   - **macOS/Linux**:
+     ```bash
+     export OPENAI_API_KEY="sk-yourkey"
+     ```
+
+### Google Sheets API
+1. In [Google Cloud Console](https://console.cloud.google.com/), create a new project.
+2. Enable **Google Sheets API** and **Google Drive API**.
+3. Create Service Account → Role: **Editor**.
+4. Download JSON key → save as `gspread_credentials.json` in the project folder.
+5. Share your Google Sheet with the `"client_email"` from the JSON.
+
+### Google Drive OAuth Client
+1. Create OAuth client ID → Application type: **Desktop app**.
+2. Download JSON → save as `client_secrets.json` in the project folder.
+
+---
+
+## 📋 Configure Spreadsheet ID
+From your Google Sheet URL:
+```
+https://docs.google.com/spreadsheets/d/<SPREADSHEET_ID>/edit
+```
+Copy the part between `/d/` and `/edit` and:
+- Add it to `main.py` under:
+```python
+SPREADSHEET_ID = "your-id-here"
+```
+OR
+- Export as environment variable:
 ```bash
-export OPENAI_API_KEY="paster your_key_here"   # Mac/Linux
-setx OPENAI_API_KEY "your_key_here"     # Windows PowerShell
+export SPREADSHEET_ID="your-id-here"
 ```
 
-5. Edit `paste your SPREADSHEET_ID` in `main.py`.
+---
 
-6. Place resumes in `resumes/` folder.
+## 📂 Add Resumes
+Place all candidate PDF files in the `resumes/` folder.
 
-7. Run the script:
+---
+
+## ▶ Run the Program
 ```bash
 python main.py
 ```
+- On first run, a browser window will ask for Google Drive permissions.
+- After processing, check:
+  - **Google Sheet** for structured candidate data
+  - **Google Drive** for uploaded resumes
+  - **output.csv** for local backup & shortlist
+
+---
+
+## 🛠 Tech Stack
+- Python 3.10+
+- OpenAI GPT
+- Google Sheets API & Drive API
+- pdfplumber, gspread, PyDrive2
+
+---
+
+## 📜 License
+MIT License
